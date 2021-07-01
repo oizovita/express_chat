@@ -13,9 +13,9 @@ exports.create = async (user) => {
 }
 
 exports.update = async (id, user) => {
-	return User.updateOne({id}, user).exec();
+	return User.updateOne({ _id: id }, user).exec();
 }
 
 exports.delete = async (id) => {
-	return User.deleteOne({id}).exec();
+	return User.deleteOne({ _id: id }).exec();
 }
