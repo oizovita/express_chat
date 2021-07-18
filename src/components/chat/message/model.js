@@ -12,11 +12,11 @@ const MessageSchema = new mongoose.Schema(
 			trim: true,
 			ref: 'User'
 		},
-		room:[{
+		room:{
 			type: mongoose.Schema.Types.ObjectId,
 			trim: true,
 			ref: 'Room'
-		}]
+		}
 
 	},
 	{

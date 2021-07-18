@@ -1,9 +1,9 @@
 const MessageRepository = require("./repository");
 
 exports.index = async (req, res) => {
-	const user = await MessageRepository.findAll(req.params.room_id);
+	const messages = await MessageRepository.findAll(req.params.room_id);
 
-	res.json(user);
+	res.json(messages);
 }
 
 exports.show = async (req, res) => {
@@ -17,18 +17,24 @@ exports.show = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-	const room = await MessageRepository.create(req.body);
-	res.json(room);
+	const message = await MessageRepository.create(req.body);
+
+	message.room = req.params.room_id
+	message.owner = req.user.id
+
+	message
+		.save()
+		.then((u) => res.status(200).send(message));
 }
 
 exports.update = async (req, res) => {
-	const room = await MessageRepository.update(req.params.id, req.body);
+	const room = await MessageRepository.update(req.params.id, req.params.room_id, req.user.id, req.body);
 
 	res.json(room);
 }
 
 exports.delete = async (req, res) => {
-	await MessageRepository.delete(req.params.id);
+	await MessageRepository.delete(req.params.id, req.params.room_id, req.user.id);
 
 	res.status(204).send()
 }

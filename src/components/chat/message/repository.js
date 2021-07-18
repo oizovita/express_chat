@@ -12,10 +12,10 @@ exports.create = async (message) => {
 	return Message.create(message);
 }
 
-exports.update = async (_id, room, message) => {
-	return Message.findOneAndUpdate({_id, room}, message, {new: true}).exec();
+exports.update = async (_id, room, owner, message) => {
+	return Message.findOneAndUpdate({_id, room, owner}, message, {new: true}).exec();
 }
 
-exports.delete = async (id, room) => {
-	return Message.deleteOne({_id: id}).exec();
+exports.delete = async (_id, room, owner) => {
+	return Message.deleteOne({_id, room, owner}).exec();
 }

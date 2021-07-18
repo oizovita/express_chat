@@ -27,7 +27,7 @@ exports.create = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
-	const room = await RoomRepository.update(req.params.id, req.user.id, req.body);
+	const room = await RoomRepository.update(req.params.id, req.body);
 
 	if (!room) {
 		res.status(404).send()
@@ -38,7 +38,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
 
-	const room = await RoomRepository.delete(req.params.id, req.user.id);
+	const room = await RoomRepository.delete(req.params.id,);
 
 	if (!room) {
 		res.status(404).send()
@@ -48,13 +48,14 @@ exports.delete = async (req, res) => {
 }
 
 exports.addUser = async (req, res) => {
-	const room = await RoomRepository.findByOwnerId(req.user.id);
+
+	const room = await RoomRepository.findById(req.params.id,);
 
 	if (!room) {
 		res.status(404).send()
 	}
 
-	room.users.push(req.params.user_id)
+	room.users.addToSet(req.params.user_id)
 
 	room
 		.save()
@@ -62,7 +63,7 @@ exports.addUser = async (req, res) => {
 }
 
 exports.deleteUser = async (req, res) => {
-	const room = await RoomRepository.findByOwnerId(req.user.id);
+	const room = await RoomRepository.findById(req.params.id);
 
 	if (!room) {
 		res.status(404).send()

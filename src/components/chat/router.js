@@ -5,6 +5,8 @@ const messageController = require('./message/controller')
 const {validate} = require('express-validation')
 const {roomCreateValidation} = require('./room/requests/create.validation')
 const {roomUpdateValidation} = require('./room/requests/update.validation')
+const {messageCreateValidation} = require('./message/requests/create.validation')
+const {messageUpdateValidation} = require('./message/requests/update.validation')
 
 const {authenticateToken} = require('../../../helpers/auth')
 
@@ -27,9 +29,9 @@ router.get('/:room_id/messages', authenticateToken, messageController.index);
 
 router.get('/:room_id/messages/:id', authenticateToken, messageController.show);
 
-router.post('/:room_id/messages', authenticateToken, messageController.create);
+router.post('/:room_id/messages', authenticateToken, validate(messageCreateValidation, {}, {abortEarly: false}), messageController.create);
 
-router.put('/:room_id/messages/:id', authenticateToken, messageController.update);
+router.put('/:room_id/messages/:id', authenticateToken, validate(messageUpdateValidation, {}, {abortEarly: false}), messageController.update);
 
 router.delete('/:room_id/messages/:id', authenticateToken, messageController.delete);
 
